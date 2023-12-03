@@ -3,7 +3,7 @@ from streamlit_drawable_canvas import st_canvas
 import numpy as np
 from PIL import Image
 import joblib as jl
-import cv2
+
 
 def main():
     st.title("Drawing board")
