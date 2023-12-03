@@ -1,8 +1,9 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 import numpy as np
-from PIL import Image
+from PIL import Image,ImageOps
 import joblib as jl
+
 
 
 def main():
@@ -22,22 +23,25 @@ def main():
     if submit_button:
         st.title("The drawn image")
         st.image(canvas_result.image_data)
-        drawn_pil_image = np.array(Image.fromarray(canvas_result.image_data))
-        resized_image_data = cv2.resize(drawn_pil_image, (28, 28))
-        gray_img = cv2.cvtColor(resized_image_data, cv2.COLOR_BGR2GRAY)
-
+        drawn_pil_image = Image.fromarray(canvas_result.image_data)
+        resized_image_data = drawn_pil_image.resize((28, 28))
+        gray_img = ImageOps.grayscale(resized_image_data)
         # Display the resized image
         st.write("Resized image")
-        st.image(Image.fromarray(gray_img))
-        st.write("shape of the resized image is", gray_img.shape)
+        st.image(np.array(gray_img))
+        grey_img=np.array(gray_img)
+        st.write("shape of the resized image is", grey_img.shape)
         st.write('array of the image')
-        st.write(np.array(gray_img))
+        st.write(np.array(grey_img))
     
         # Reshape the image to have a single channel and match the model's input shape
-        input_image = gray_img.reshape((1, 28, 28, 1))
+        input_image = grey_img.reshape((1, 28, 28, 1))
+
+        st.write("done reshapping to 1 ,28,28,1")
     
 
         model = jl.load('imageDL3.pkl')
+        st.write("imported the model that was built")
 
         # Make predictions
         prob = model.predict(input_image)
