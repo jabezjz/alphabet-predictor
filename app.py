@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 import numpy as np
 from PIL import Image,ImageOps
-import joblib as jl
+from tensorflow import keras
 
 
 
@@ -40,7 +40,7 @@ def main():
         st.write("done reshapping to 1 ,28,28,1")
     
 
-        model = jl.load('imageDL3.pkl')
+        model = keras.models.load_model('imageDL4')
         st.write("imported the model that was built")
 
         # Make predictions
